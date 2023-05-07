@@ -48,6 +48,12 @@ class User(AbstractModel, AbstractBaseUser, PermissionsMixin):
     def has_liked_post(self, post):
         return self.posts_liked.filter(pk=post.pk).exists()
 
+    def add_friend(self, friend):
+        return self.friends.add(friend)
+
+    def delete_friend(self, friend):
+        return self.friends.remove(friend)
+
     public_id = models.UUIDField(db_index=True, unique=True,
                                  default=uuid.uuid4, editable=False)
     username = models.CharField(db_index=True,

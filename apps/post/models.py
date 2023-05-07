@@ -5,7 +5,6 @@ from ..abstract.models import AbstractModel, AbstractManager
 class PostManager(AbstractManager):
     pass
 
-
 class Post(AbstractModel):
     author = models.ForeignKey(to='user.User', on_delete=models.CASCADE, related_name="posts")
     body = models.TextField()
@@ -14,4 +13,4 @@ class Post(AbstractModel):
     objects = PostManager()
 
     def __str__(self):
-        return f'{self.author.username}'
+        return f'{self.body}'

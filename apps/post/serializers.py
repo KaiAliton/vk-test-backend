@@ -4,12 +4,10 @@ from apps.abstract.serializers import AbstractSerializer
 from apps.user.serializers import UserSerializer
 from apps.post.models import Post
 from apps.user.models import User
-
+from rest_framework.fields import CurrentUserDefault
 
 class PostSerializer(AbstractSerializer):
-    author = serializers.SlugRelatedField(
-        queryset=User.objects.all(), slug_field='public_id')
-
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
     liked = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
 
@@ -31,10 +29,8 @@ class PostSerializer(AbstractSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        author = User.objects.get_object_by_public_id(rep["author"])
-        comments = Comment.objects.filter(post__public_id=rep['id'])
-        rep["comments"] = CommentSerializer(comments, many=True).data
-        rep["author"] = UserSerializer(author).data
+        print(rep)
+        rep["author"] = UserSerializer(instance.author).data
         return rep
 
     def validate_author(self, value):
@@ -42,6 +38,7 @@ class PostSerializer(AbstractSerializer):
             raise ValidationError("You can't create a post for another user.")
 
         return value
+
 
     class Meta:
         model = Post
