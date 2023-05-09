@@ -7,6 +7,7 @@ UserProfile = get_user_model()
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('author', 'body')
+    list_display = ('author', 'body', 'created')
+    list_filter = ['created']
 
 # Register your models here.

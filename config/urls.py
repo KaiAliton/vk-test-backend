@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_nested import routers
+from rest_framework import routers
 from api.auth.auth import RegisterViewSet, LoginViewSet, RefreshViewSet
 from api.v1.user.views import UserViewSet
 from api.v1.post.views import PostViewSet
