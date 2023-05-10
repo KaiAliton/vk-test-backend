@@ -19,7 +19,8 @@ authrouter.register(r'refresh', RefreshViewSet, basename='auth-refresh')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(apirouter.urls)),
-    path('auth/', include(authrouter.urls))
+    path('auth/', include(authrouter.urls)),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 if settings.DEBUG:

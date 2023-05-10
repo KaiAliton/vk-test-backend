@@ -26,19 +26,10 @@ class PostViewSet(PaginatedResponseMixin, AbstractViewSet):
         post = self.get_object()
         user = self.request.user
 
-        user.like_post(post)
-
-        serializer = self.serializer_class(post)
-
-        return Response(serializer.data)
-
-
-    @action(methods=['post'], detail=True)
-    def remove_like(self, request, *args, **kwargs):
-        post = self.get_object()
-        user = self.request.user
-
-        user.remove_like_post(post)
+        if user.posts_liked.filter(public_id=post.public_id).exists():
+            user.remove_like_post(post)
+        else:
+            user.like_post(post)
 
         serializer = self.serializer_class(post)
 

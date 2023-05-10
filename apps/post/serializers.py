@@ -29,7 +29,7 @@ class PostSerializer(AbstractSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        rep["author"] = UserSerializer(instance.author).data
+        rep["author"] = UserSerializer(instance.author, context=self.context).data
         return rep
 
     def validate_author(self, value):
@@ -37,6 +37,11 @@ class PostSerializer(AbstractSerializer):
             raise ValidationError("You can't create a post for another user.")
 
         return value
+
+    def validate(self, attrs):
+        if not attrs.get('body') and not attrs.get('cover'):
+            raise serializers.ValidationError("Отправьте хоть что-то...")
+        return attrs
 
 
     class Meta:
